@@ -4,7 +4,6 @@ const email = document.getElementById("mail");
 const phone = document.getElementById("phone");
 const subject = document.getElementById("subject");
 const textarea = document.getElementById("textarea");
-// const msg = document.querySelectorAll("info");
 const btn = document.getElementById("btn");
 
 
@@ -14,9 +13,11 @@ const nameHandler = () => {
     if (!(nameFilter.test(user) && user.length < 60)) {
 
         setError(userName, "Invalid name*")
+         return false
     }
     else {
         setSuccess(userName)
+       return true
     }
 }
 
@@ -26,9 +27,11 @@ const mailHandler = () => {
 
     if (!(emailfilter.test(mail))) {
         setError(email, "Invalid mail id*")
+       return false
 
     } else {
         setSuccess(email)
+        return true
     }
 }
 const numHandler = () => {
@@ -36,10 +39,12 @@ const numHandler = () => {
     let numFilter = /^([0-9]{10})+$/;
     if (!(numFilter.test(number))) {
         setError(phone, "Invalid phone number*")
+        return false;
     }
     else {
-
         setSuccess(phone)
+        return true
+
     }
 }
 const subHandler = () => {
@@ -47,9 +52,11 @@ const subHandler = () => {
     let subFilter = /^[A-Za-z0-9_\s]+$/;
     if (subFilter.test(sub) && sub.length < 40) {
         setSuccess(subject)
+       return true
     }
     else {
         setError(subject, "Invalid subject*")
+        return false
     }
 }
 const textHandler = () => {
@@ -58,16 +65,29 @@ const textHandler = () => {
     const textFilter = /^[A-Za-z0-9_!@#$%^&*():""''?\s]+$/;
     if (textFilter.test(text)) {
         setSuccess(textarea)
+        return true
     }
     else {
         setError(textarea, "Invalid message*")
+        return false;
     }
 }
 
 const validation = () => {
-    const msg = document.querySelector("info");
-    console.log("clicked");
-    msg.className="infoerror";
+    const msg = document.querySelector(".info");
+    console.log(nameHandler());
+    console.log(mailHandler());
+    console.log(numHandler());
+    console.log(subHandler());
+    console.log(textHandler());
+    if (nameHandler()==true && mailHandler()==true && numHandler()==true && subHandler()==true && textHandler()==true) {
+        msg.className="info success";
+        const child = msg.querySelector("h5");
+        child.innerText= "Form Submitted Successfully";
+    } else {
+        msg.className= "info error";
+    }
+    
 
 }
 
@@ -82,12 +102,11 @@ function setError(input, message) {
     // const small = parent.querySelector("span");
     parent.className = "box error";
     // small.innerText = message;
-    return "false";
+    
 }
 
 function setSuccess(input) {
 
     const parent = input.parentElement;
     parent.className = "box success";
-    return "true";
 }
